@@ -16,11 +16,13 @@ public class CuadriculaSudoku : MonoBehaviour
     // Lista para almacenar los objetos de la cuadrícula
     List< GameObject > cuadricula = new List< GameObject >();
 
+    int datosSeleccionadosCuadricula = -1; // Número que representa qué dificultad de datos de Sudoku se ha seleccionado
+
     // Método llamado al inicio del juego
     void Start ()
     {
         CrearCuadricula(); // Crear la cuadrícula
-        PonerNumerosEnCuadricula(); // Poner números en la cuadrícula
+        PonerNumerosEnCuadricula( "Fácil" ); // Poner números en la cuadrícula
     }
 
     // Método para crear la cuadrícula
@@ -81,12 +83,27 @@ public class CuadriculaSudoku : MonoBehaviour
     }
 
     // Método para poner números en los cuadrados de la cuadrícula
-    void PonerNumerosEnCuadricula ()
+    void PonerNumerosEnCuadricula ( string nivel )
     {
         // Bucle para poner un número aleatorio en cada cuadrado
-        foreach ( GameObject cuadrado in cuadricula )
+        /* foreach ( GameObject cuadrado in cuadricula )
         {
             cuadrado.GetComponent< CuadriculaBase >().PonerNumero( Random.Range( 0 , 10 ) );
+        } */
+
+        datosSeleccionadosCuadricula = Random.Range( 0 , DatosSudoku.Instancia.juegoSudoku[ nivel ].Count ); // Seleccionar un conjunto de datos de Sudoku aleatorio
+        var datos = DatosSudoku.Instancia.juegoSudoku[ nivel ][ datosSeleccionadosCuadricula ]; // Obtener los datos de Sudoku seleccionados
+
+        EstablecerDatosEnCuadricula( datos ); // Establecer los datos sin resolver en la cuadrícula
+    }
+
+    void EstablecerDatosEnCuadricula ( DatosSudoku.DatosSudokuTabla datos )
+    {
+
+        // Bucle para establecer los datos sin resolver en la cuadrícula
+        for ( int indice = 0 ; indice < cuadricula.Count ; indice++ )
+        {
+            cuadricula[ indice ].GetComponent< CuadriculaBase >().PonerNumero( datos.datosSinResolver[ indice ] );
         }
     }
 }
