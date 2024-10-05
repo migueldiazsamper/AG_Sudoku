@@ -22,7 +22,7 @@ public class CuadriculaSudoku : MonoBehaviour
     void Start ()
     {
         CrearCuadricula(); // Crear la cuadrícula
-        PonerNumerosEnCuadricula( "Fácil" ); // Poner números en la cuadrícula
+        PonerNumerosEnCuadricula( Ajustes.Instancia.ObtenerDificultad() ); // Poner números en la cuadrícula
     }
 
     // Método para crear la cuadrícula
