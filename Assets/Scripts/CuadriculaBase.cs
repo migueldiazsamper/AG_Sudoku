@@ -3,13 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.Events;
+using UnityEngine.EventSystems;
 
 // Clase que representa un cuadrado base en la cuadrícula de Sudoku
-public class CuadriculaBase : Selectable
+public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler , IPointerUpHandler , IPointerExitHandler
 {
     // Variable serializada para configurar el texto del número desde el editor de Unity
     [ SerializeField ] TextMeshProUGUI textoNumero;
     int numero = 0; // Número que se mostrará en el cuadrado
+    bool seleccionado = false; // Indica si el cuadrado está seleccionado
+    int indiceCuadrado = -1; // Índice del cuadrado en la cuadrícula
+
+    public bool EsSeleccionado () // Método para obtener el valor de la variable seleccionado
+    {
+        return seleccionado;
+    }
+
+    public void EstablecerIndiceCuadrado ( int indice ) // Método para asignar el índice del cuadrado
+    {
+        indiceCuadrado = indice;
+    }
+
+    void Start ()
+    {
+        seleccionado = false; // Inicializar la variable seleccionado en falso
+    }
 
     // Método para mostrar el texto del número en el cuadrado
     public void MostrarTexto ()
@@ -30,5 +49,26 @@ public class CuadriculaBase : Selectable
     {
         numero = numeroDado; // Asignar el número dado
         MostrarTexto(); // Mostrar el número en el cuadrado
+    }
+
+    public void OnPointerClick ( PointerEventData eventData )
+    {
+        seleccionado = true;
+        EventosJuego.MetodoCuadradoSeleccionado( indiceCuadrado );
+    }
+
+    public void OnSubmit ( BaseEventData eventData )
+    {
+
+    }
+
+    void OnEnable ()
+    {
+        EventosJuego.OnActualizarNumeroCuadrado += OnEstablecerNumero;
+    }
+
+    void OnDisable ()
+    {
+        EventosJuego.OnActualizarNumeroCuadrado -= OnEstablecerNumero;
     }
 }

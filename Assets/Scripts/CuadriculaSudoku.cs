@@ -35,6 +35,7 @@ public class CuadriculaSudoku : MonoBehaviour
     // Método para crear los cuadrados de la cuadrícula
     void CrearCuadrados ()
     {
+        int indiceCuadrados = 0; // Índice de los cuadrados en la cuadrícula
         // Bucle para crear cada cuadrado en la cuadrícula
         for ( int fila = 0 ; fila < filas ; fila++ )
         {
@@ -42,10 +43,14 @@ public class CuadriculaSudoku : MonoBehaviour
             {
                 // Instanciar el prefab del cuadrado y añadirlo a la lista
                 cuadricula.Add( Instantiate( cuadriculaBase ) as GameObject );
+                // Establecer el índice del cuadrado en la cuadrícula
+                cuadricula[ cuadricula.Count - 1 ].GetComponent< CuadriculaBase >().EstablecerIndiceCuadrado( indiceCuadrados );
                 // Establecer el padre del cuadrado como el objeto actual
                 cuadricula[ cuadricula.Count - 1 ].transform.parent = this.transform;
                 // Ajustar la escala del cuadrado
                 cuadricula[ cuadricula.Count - 1 ].transform.localScale = new Vector3( escalaCuadrado , escalaCuadrado , escalaCuadrado );
+
+                indiceCuadrados++; // Incrementar el índice de los cuadrados
             }
         }
     }
