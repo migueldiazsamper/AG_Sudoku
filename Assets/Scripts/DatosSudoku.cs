@@ -878,7 +878,7 @@ public class DatosSudoku : MonoBehaviour
         public int[] datosResueltos; // Datos resueltos del Sudoku
 
         // Constructor de la estructura DatosSudokuTabla
-        public DatosSudokuTabla( int[] sinResolver , int[] resueltos ) : this()
+        public DatosSudokuTabla ( int[] sinResolver , int[] resueltos ) : this()
         {
             this.datosSinResolver = sinResolver; // Asignar datos sin resolver
             this.datosResueltos = resueltos; // Asignar datos resueltos
@@ -889,7 +889,7 @@ public class DatosSudoku : MonoBehaviour
     public Dictionary< string , List< DatosSudokuTabla > > juegoSudoku = new Dictionary< string , List< DatosSudokuTabla > >();
 
     // Método llamado al despertar el objeto
-    void Awake()
+    void Awake ()
     {
         // Si no hay una instancia, asignar esta instancia
         if ( Instancia == null )
@@ -903,12 +903,12 @@ public class DatosSudoku : MonoBehaviour
     }
 
     // Método llamado al inicio del juego
-    void Start()
+    void Start ()
     {
         // Añadir los datos de Sudoku por dificultad al diccionario
-        juegoSudoku.Add( "Fácil" , DatosSudokuFacil.cogerDatos() );
+        juegoSudoku.Add( "Facil" , DatosSudokuFacil.cogerDatos() );
         juegoSudoku.Add( "Medio" , DatosSudokuMedio.cogerDatos() );
-        juegoSudoku.Add( "Difícil" , DatosSudokuDificil.cogerDatos() );
-        juegoSudoku.Add( "MuyDifícil" , DatosSudokuMuyDificil.cogerDatos() );
+        juegoSudoku.Add( "Dificil" , DatosSudokuDificil.cogerDatos() );
+        juegoSudoku.Add( "MuyDificil" , DatosSudokuMuyDificil.cogerDatos() );
     }
 }
