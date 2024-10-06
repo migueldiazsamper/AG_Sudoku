@@ -65,10 +65,32 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
     void OnEnable ()
     {
         EventosJuego.OnActualizarNumeroCuadrado += OnEstablecerNumero;
+        EventosJuego.OnCuadradoSeleccionado += OnSeleccionarCuadrado;
     }
 
     void OnDisable ()
     {
         EventosJuego.OnActualizarNumeroCuadrado -= OnEstablecerNumero;
+        EventosJuego.OnCuadradoSeleccionado -= OnSeleccionarCuadrado;
+    }
+
+    public void OnEstablecerNumero ( int numero )
+    {
+        if ( seleccionado )
+        {
+            PonerNumero( numero );
+        }
+    }
+
+    public void OnSeleccionarCuadrado ( int indice )
+    {
+        if ( indice == indiceCuadrado )
+        {
+            seleccionado = true;
+        }
+        else
+        {
+            seleccionado = false;
+        }
     }
 }
