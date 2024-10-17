@@ -29,4 +29,16 @@ public class EventosJuego : MonoBehaviour
             OnCuadradoSeleccionado ( indiceCuadrado );
         }
     }
+
+    public delegate void NumeroIncorrecto ();
+    public static event NumeroIncorrecto OnNumeroIncorrecto;
+
+    public static void MetodoNumeroIncorrecto ()
+    {
+        bool noEsNulo = OnNumeroIncorrecto != null;
+        if ( noEsNulo )
+        {
+            OnNumeroIncorrecto();
+        }
+    }
 }

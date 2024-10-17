@@ -14,6 +14,18 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
     int numero = 0; // Número que se mostrará en el cuadrado
     bool seleccionado = false; // Indica si el cuadrado está seleccionado
     int indiceCuadrado = -1; // Índice del cuadrado en la cuadrícula
+    int numeroCorrecto = 0; // Número correcto que debe tener el cuadrado
+    bool tieneNumeroPredeterminado = false; // Indica si el cuadrado tiene un número predeterminado
+
+    public void EstablecerTieneNumeroPredeterminado ( bool tieneNumero ) // Método para asignar si el cuadrado tiene un número predeterminado
+    {
+        tieneNumeroPredeterminado = tieneNumero;
+    }
+
+    public bool TieneNumeroPredeterminado () // Método para obtener el valor de la variable tieneNumeroPredeterminado
+    {
+        return tieneNumeroPredeterminado;
+    }
 
     public bool EsSeleccionado () // Método para obtener el valor de la variable seleccionado
     {
@@ -23,6 +35,11 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
     public void EstablecerIndiceCuadrado ( int indice ) // Método para asignar el índice del cuadrado
     {
         indiceCuadrado = indice;
+    }
+
+    public void EstablecerNumeroCorrecto ( int numero ) // Método para asignar el número correcto al cuadrado
+    {
+        numeroCorrecto = numero;
     }
 
     void Start ()
@@ -76,9 +93,26 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
 
     public void OnEstablecerNumero ( int numero )
     {
-        if ( seleccionado )
+        if ( seleccionado && ! tieneNumeroPredeterminado )
         {
             PonerNumero( numero );
+
+            bool noEsCorrecto = numero != numeroCorrecto; // Verificar si el número es incorrecto
+            if ( noEsCorrecto )
+            {
+                var colores = this.colors;
+                colores.normalColor = Color.red;
+                this.colors = colores;
+
+                EventosJuego.MetodoNumeroIncorrecto(); // Llamar al evento de número incorrecto
+            }
+            else
+            {
+                tieneNumeroPredeterminado = true;
+                var colores = this.colors;
+                colores.normalColor = Color.white;
+                this.colors = colores;
+            }
         }
     }
 

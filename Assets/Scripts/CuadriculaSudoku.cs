@@ -103,6 +103,8 @@ public class CuadriculaSudoku : MonoBehaviour
         for ( int indice = 0 ; indice < cuadricula.Count ; indice++ )
         {
             cuadricula[ indice ].GetComponent< CuadriculaBase >().PonerNumero( datos.datosSinResolver[ indice ] );
+            cuadricula[ indice ].GetComponent< CuadriculaBase >().EstablecerNumeroCorrecto( datos.datosResueltos[ indice ] );
+            cuadricula[ indice ].GetComponent< CuadriculaBase >().EstablecerTieneNumeroPredeterminado( datos.datosSinResolver[ indice ] != 0 && datos.datosSinResolver[ indice ] == datos.datosResueltos[ indice ] );
         }
     }
 }
