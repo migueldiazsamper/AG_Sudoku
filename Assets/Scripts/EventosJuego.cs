@@ -41,4 +41,16 @@ public class EventosJuego : MonoBehaviour
             OnNumeroIncorrecto();
         }
     }
+
+    public delegate void GameOver ();
+    public static event GameOver OnGameOver;
+
+    public static void MetodoGameOver ()
+    {
+        bool noEsNulo = OnGameOver != null;
+        if ( noEsNulo )
+        {
+            OnGameOver();
+        }
+    }
 }

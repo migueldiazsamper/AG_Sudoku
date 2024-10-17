@@ -33,6 +33,7 @@ public class Vidas : MonoBehaviour
         bool gameOver = vidas <= 0;
         if ( gameOver )
         {
+            EventosJuego.MetodoGameOver();
             popupGameOver.SetActive( true );
         }
     }
