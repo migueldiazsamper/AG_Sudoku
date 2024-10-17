@@ -20,6 +20,7 @@ public class Ajustes : MonoBehaviour
     // Método llamado al despertar el objeto
     void Awake ()
     {
+        juegoPausado = false;
         // Si no hay una instancia, asignar esta instancia y no destruirla al cargar una nueva escena
         if ( Instancia == null )
         {
@@ -33,6 +34,17 @@ public class Ajustes : MonoBehaviour
     }
 
     Dificultad dificultad; // Variable para almacenar la dificultad actual
+    bool juegoPausado = false;
+
+    public void PararJuego ( bool pausado )
+    {
+        juegoPausado = pausado;
+    }
+
+    public bool EstaPausado ()
+    {
+        return juegoPausado;
+    }
 
     // Método llamado al inicio del juego
     void Start ()
