@@ -12,6 +12,7 @@ public class CuadriculaSudoku : MonoBehaviour
     [ SerializeField ] GameObject cuadriculaBase; // Prefab base para cada cuadrado de la cuadrícula
     [ SerializeField ] Vector2 posicionInicial = new Vector2( 0.0f , 0.0f ); // Posición inicial de la cuadrícula
     [ SerializeField ] float escalaCuadrado = 1.0f; // Escala de cada cuadrado en la cuadrícula
+    [ SerializeField ] float huecoCasilla = 0.1f; // Hueco entre las casillas de la cuadrícula
 
     // Lista para almacenar los objetos de la cuadrícula
     List< GameObject > cuadricula = new List< GameObject >();
@@ -62,6 +63,8 @@ public class CuadriculaSudoku : MonoBehaviour
         RectTransform rectTransform = cuadricula[ 0 ].GetComponent< RectTransform >();
         // Calcular la distancia entre los cuadrados
         Vector2 distancia = new Vector2();
+        Vector2 numeroHuecoCasilla = new Vector2( 0.0f , 0.0f );
+        bool filaMovida = false;
         distancia.x = rectTransform.rect.width * rectTransform.transform.localScale.x + distanciaCuadrados;
         distancia.y = rectTransform.rect.height * rectTransform.transform.localScale.y + distanciaCuadrados;
 
@@ -72,15 +75,34 @@ public class CuadriculaSudoku : MonoBehaviour
         foreach ( GameObject cuadrado in cuadricula )
         {
             // Si se ha alcanzado el límite de columnas, reiniciar el contador de columnas y aumentar el contador de filas
-            if ( numeroColumna + 1 > columnas )
+            bool finColumnas = numeroColumna + 1 > columnas;
+            if ( finColumnas )
             {
-                numeroColumna = 0;
                 numeroFila++;
+                numeroColumna = 0;
+                numeroHuecoCasilla.x = 0;
+                filaMovida = false;
             }
 
             // Calcular la posición del cuadrado
-            var distanciaX = distancia.x * numeroColumna;
-            var distanciaY = distancia.y * numeroFila;
+            var distanciaX = distancia.x * numeroColumna + ( numeroHuecoCasilla.x * huecoCasilla );
+            var distanciaY = distancia.y * numeroFila + ( numeroHuecoCasilla.y * huecoCasilla );
+
+            bool llegadoATercerCuadradoX = numeroColumna > 0 && numeroColumna % 3 == 0;
+            if ( llegadoATercerCuadradoX )
+            {
+                numeroHuecoCasilla.x++;
+                distanciaX += huecoCasilla;
+            }
+
+            bool llegadoATercerCuadradoY = numeroFila > 0 && numeroFila % 3 == 0 && ! filaMovida;
+            if ( llegadoATercerCuadradoY )
+            {
+                filaMovida = true;
+                numeroHuecoCasilla.y++;
+                distanciaY += huecoCasilla;
+            }
+
             // Establecer la posición del cuadrado
             cuadrado.GetComponent< RectTransform >().anchoredPosition = new Vector2( posicionInicial.x + distanciaX , posicionInicial.y - distanciaY );
             numeroColumna++; // Incrementar el contador de columnas
