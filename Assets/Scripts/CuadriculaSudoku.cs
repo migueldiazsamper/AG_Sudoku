@@ -19,6 +19,8 @@ public class CuadriculaSudoku : MonoBehaviour
 
     int datosSeleccionadosCuadricula = -1; // Número que representa qué dificultad de datos de Sudoku se ha seleccionado
 
+    public Color colorResaltado = Color.blue; // Color para resaltar los cuadrados seleccionados
+
     // Método llamado al inicio del juego
     void Start ()
     {
@@ -128,5 +130,40 @@ public class CuadriculaSudoku : MonoBehaviour
             cuadricula[ indice ].GetComponent< CuadriculaBase >().EstablecerNumeroCorrecto( datos.datosResueltos[ indice ] );
             cuadricula[ indice ].GetComponent< CuadriculaBase >().EstablecerTieneNumeroPredeterminado( datos.datosSinResolver[ indice ] != 0 && datos.datosSinResolver[ indice ] == datos.datosResueltos[ indice ] );
         }
+    }
+
+    void OnEnable ()
+    {
+        EventosJuego.OnCuadradoSeleccionado += OnCuadradoSeleccionado;
+    }
+
+    void OnDisable ()
+    {
+        EventosJuego.OnCuadradoSeleccionado -= OnCuadradoSeleccionado;
+    }
+
+    void EstablecerColoresCuadrados ( int[] datos , Color color )
+    {
+        foreach ( var indice in datos )
+        {
+            var componente = cuadricula[ indice ].GetComponent< CuadriculaBase >();
+            bool noEstaSeleccionado = ! componente.TieneNumeroIncorrecto() && ! componente.EsSeleccionado();
+            if ( noEstaSeleccionado )
+            {
+                componente.EstablecerColor( color );
+            }
+        }
+    }
+
+    public void OnCuadradoSeleccionado ( int indiceCuadrado )
+    {
+        var lineaHorizontal = IndicadorLinea.Instancia.ObtenerFila( indiceCuadrado );
+        var lineaVertical = IndicadorLinea.Instancia.ObtenerColumna( indiceCuadrado );
+        var cuadrado = IndicadorLinea.Instancia.ObtenerCuadrado( indiceCuadrado );
+
+        EstablecerColoresCuadrados( IndicadorLinea.Instancia.ObtenerTodosIndicesCuadrados() , Color.white );
+        EstablecerColoresCuadrados( lineaHorizontal , colorResaltado );
+        EstablecerColoresCuadrados( lineaVertical , colorResaltado );
+        EstablecerColoresCuadrados( cuadrado , colorResaltado );
     }
 }

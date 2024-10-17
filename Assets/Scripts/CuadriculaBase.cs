@@ -16,6 +16,12 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
     int indiceCuadrado = -1; // Índice del cuadrado en la cuadrícula
     int numeroCorrecto = 0; // Número correcto que debe tener el cuadrado
     bool tieneNumeroPredeterminado = false; // Indica si el cuadrado tiene un número predeterminado
+    bool tieneNumeroIncorrecto = false; // Indica si el cuadrado tiene un número incorrecto
+
+    public bool TieneNumeroIncorrecto () // Método para obtener el valor de la variable tieneNumeroIncorrecto
+    {
+        return tieneNumeroIncorrecto;
+    }
 
     public void EstablecerTieneNumeroPredeterminado ( bool tieneNumero ) // Método para asignar si el cuadrado tiene un número predeterminado
     {
@@ -40,6 +46,7 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
     public void EstablecerNumeroCorrecto ( int numero ) // Método para asignar el número correcto al cuadrado
     {
         numeroCorrecto = numero;
+        tieneNumeroIncorrecto = false;
     }
 
     void Start ()
@@ -100,6 +107,7 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
             bool noEsCorrecto = numero != numeroCorrecto; // Verificar si el número es incorrecto
             if ( noEsCorrecto )
             {
+                tieneNumeroIncorrecto = true;
                 var colores = this.colors;
                 colores.normalColor = Color.red;
                 this.colors = colores;
@@ -108,6 +116,7 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
             }
             else
             {
+                tieneNumeroIncorrecto = false;
                 tieneNumeroPredeterminado = true;
                 var colores = this.colors;
                 colores.normalColor = Color.white;
@@ -126,5 +135,12 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
         {
             seleccionado = false;
         }
+    }
+
+    public void EstablecerColor ( Color color )
+    {
+        var colores = this.colors;
+        colores.normalColor = color;
+        this.colors = colores;
     }
 }
