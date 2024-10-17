@@ -35,7 +35,7 @@ public class Reloj : MonoBehaviour
 
     void Update ()
     {
-        bool relojFuncionando = ! relojParado;
+        bool relojFuncionando = ! Ajustes.Instancia.EstaPausado() && ! relojParado;
         if ( relojFuncionando )
         {
             tiempoTranscurrido += Time.deltaTime;

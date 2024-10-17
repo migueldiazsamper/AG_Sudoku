@@ -66,6 +66,6 @@ public class BotonesMenu : MonoBehaviour
 
     public void EstablecerPausa ( bool pausado )
     {
-        Ajustes.Instancia.PausarJuego( pausado );
+        Ajustes.Instancia.PararJuego( pausado );
     }
 }
