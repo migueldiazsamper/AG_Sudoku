@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 // Clase que representa una cuadrícula de Sudoku en Unity
 public class CuadriculaSudoku : MonoBehaviour

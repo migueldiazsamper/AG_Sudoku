@@ -53,4 +53,16 @@ public class EventosJuego : MonoBehaviour
             OnGameOver();
         }
     }
+
+    public delegate void NotasActivas ( bool activas );
+    public static event NotasActivas OnNotasActivas;
+
+    public static void MetodoNotasActivas ( bool activas )
+    {
+        bool noEsNulo = OnNotasActivas != null;
+        if ( noEsNulo )
+        {
+            OnNotasActivas( activas );
+        }
+    }
 }
