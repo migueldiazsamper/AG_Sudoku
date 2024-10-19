@@ -68,6 +68,11 @@ public class Reloj : MonoBehaviour
         EventosJuego.OnGameOver -= OnGameOver;
     }
 
+    public static string ConseguirTiempo ()
+    {
+        return instancia.tiempoTranscurrido.ToString();
+    }
+
     public TextMeshProUGUI ConseguirTextoReloj ()
     {
         return textoReloj;
