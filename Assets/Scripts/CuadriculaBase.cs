@@ -11,14 +11,12 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
 {
     // Variable serializada para configurar el texto del número desde el editor de Unity
     public GameObject textoNumero;
-    public List< GameObject > notasDeLosNumeros; // Índices de los cuadrados incorrectos en la cuadrícula
     int numero = 0; // Número que se mostrará en el cuadrado
     bool seleccionado = false; // Indica si el cuadrado está seleccionado
     int indiceCuadrado = -1; // Índice del cuadrado en la cuadrícula
     int numeroCorrecto = 0; // Número correcto que debe tener el cuadrado
     bool tieneNumeroPredeterminado = false; // Indica si el cuadrado tiene un número predeterminado
     bool tieneNumeroIncorrecto = false; // Indica si el cuadrado tiene un número incorrecto
-    bool notaActiva;
 
     public bool TieneNumeroIncorrecto () // Método para obtener el valor de la variable tieneNumeroIncorrecto
     {
@@ -54,87 +52,6 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
     void Start ()
     {
         seleccionado = false; // Inicializar la variable seleccionado en falso
-        notaActiva = false;
-
-        EstablecerValorNumeroNotas( 0 );
-    }
-
-    public List< string > ObtenerNotaCuadrado ()
-    {
-        List< string > notas = new List< string >();
-        foreach ( var numero in notasDeLosNumeros )
-        {
-            notas.Add( numero.GetComponent< TextMeshProUGUI >().text );
-        }
-
-        return notas;
-    }
-
-    void EstablecerNotasCuadradoVacias ()
-    {
-        foreach ( var numero in notasDeLosNumeros )
-        {
-            bool tieneQueEstarVacio = numero.GetComponent< TextMeshProUGUI >().text == "0";
-            if ( tieneQueEstarVacio )
-            {
-                numero.GetComponent< TextMeshProUGUI >().text = " "; 
-            }
-        }
-    }
-
-    void EstablecerValorNumeroNotas ( int valor )
-    {
-        foreach ( var numero in notasDeLosNumeros )
-        {
-            bool tieneQueEstarVacio = valor <= 0;
-            if ( tieneQueEstarVacio )
-            {
-                numero.GetComponent< TextMeshProUGUI >().text = " ";
-            }
-            else
-            {
-                numero.GetComponent< TextMeshProUGUI >().text = valor.ToString();
-            }
-        }
-    }
-
-    void EstablecerNotaNumeroConcreto ( int valor , bool forzarActualizacion = false )
-    {
-        if ( ! notaActiva || ! forzarActualizacion )
-        {
-            return;
-        }
-
-        bool tieneQueEstarVacio = valor <= 0;
-        if ( tieneQueEstarVacio )
-        {
-            notasDeLosNumeros[ valor - 1 ].GetComponent< TextMeshProUGUI >().text = " ";
-        }
-        else
-        {
-            bool tieneNumero = notasDeLosNumeros[ valor - 1 ].GetComponent< TextMeshProUGUI >().text == " " || forzarActualizacion;
-            if ( tieneNumero )
-            {
-                notasDeLosNumeros[ valor - 1 ].GetComponent< TextMeshProUGUI >().text = valor.ToString();
-            }
-            else
-            {
-                notasDeLosNumeros[ valor - 1 ].GetComponent< TextMeshProUGUI >().text = " ";
-            }
-        }
-    }
-
-    public void EstablecerNotasCuadricula ( List< int > notas )
-    {
-        foreach ( var nota in notas )
-        {
-            EstablecerNotaNumeroConcreto( nota , true );
-        }
-    }
-
-    public void OnNotasActivas ( bool activar )
-    {
-        notaActiva = activar;
     }
 
     // Método para mostrar el texto del número en el cuadrado
@@ -173,47 +90,37 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
     {
         EventosJuego.OnActualizarNumeroCuadrado += OnEstablecerNumero;
         EventosJuego.OnCuadradoSeleccionado += OnSeleccionarCuadrado;
-        EventosJuego.OnNotasActivas += OnNotasActivas;
     }
 
     void OnDisable ()
     {
         EventosJuego.OnActualizarNumeroCuadrado -= OnEstablecerNumero;
         EventosJuego.OnCuadradoSeleccionado -= OnSeleccionarCuadrado;
-        EventosJuego.OnNotasActivas -= OnNotasActivas;
     }
 
     public void OnEstablecerNumero ( int numero )
     {
         if ( seleccionado && ! tieneNumeroPredeterminado )
         {
-            bool hayQuePonerNota = notaActiva && ! tieneNumeroIncorrecto;
-            if ( hayQuePonerNota )
+            PonerNumero( numero );
+
+            bool noEsCorrecto = numero != numeroCorrecto; // Verificar si el número es incorrecto
+            if ( noEsCorrecto )
             {
-                EstablecerNotaNumeroConcreto( numero );
+                tieneNumeroIncorrecto = true;
+                var colores = this.colors;
+                colores.normalColor = Color.red;
+                this.colors = colores;
+
+                EventosJuego.MetodoNumeroIncorrecto(); // Llamar al evento de número incorrecto
             }
-            else if ( ! notaActiva )
+            else
             {
-                PonerNumero( numero );
-
-                bool noEsCorrecto = numero != numeroCorrecto; // Verificar si el número es incorrecto
-                if ( noEsCorrecto )
-                {
-                    tieneNumeroIncorrecto = true;
-                    var colores = this.colors;
-                    colores.normalColor = Color.red;
-                    this.colors = colores;
-
-                    EventosJuego.MetodoNumeroIncorrecto(); // Llamar al evento de número incorrecto
-                }
-                else
-                {
-                    tieneNumeroIncorrecto = false;
-                    tieneNumeroPredeterminado = true;
-                    var colores = this.colors;
-                    colores.normalColor = Color.white;
-                    this.colors = colores;
-                }
+                tieneNumeroIncorrecto = false;
+                tieneNumeroPredeterminado = true;
+                var colores = this.colors;
+                colores.normalColor = Color.white;
+                this.colors = colores;
             }
         }
     }
