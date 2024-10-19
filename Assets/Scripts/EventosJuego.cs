@@ -53,4 +53,16 @@ public class EventosJuego : MonoBehaviour
             OnGameOver();
         }
     }
+
+    public delegate void BorrarNumero ();
+    public static event BorrarNumero OnBorrarNumero;
+
+    public static void MetodoBorrarNumero ()
+    {
+        bool noEsNulo = OnBorrarNumero != null;
+        if ( noEsNulo )
+        {
+            OnBorrarNumero();
+        }
+    }
 }

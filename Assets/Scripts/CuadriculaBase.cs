@@ -90,12 +90,25 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
     {
         EventosJuego.OnActualizarNumeroCuadrado += OnEstablecerNumero;
         EventosJuego.OnCuadradoSeleccionado += OnSeleccionarCuadrado;
+        EventosJuego.OnBorrarNumero += OnBorrarNumero;
     }
 
     void OnDisable ()
     {
         EventosJuego.OnActualizarNumeroCuadrado -= OnEstablecerNumero;
         EventosJuego.OnCuadradoSeleccionado -= OnSeleccionarCuadrado;
+        EventosJuego.OnBorrarNumero -= OnBorrarNumero;
+    }
+
+    public void OnBorrarNumero ()
+    {
+        if ( seleccionado && ! tieneNumeroPredeterminado )
+        {
+            numero = 0;
+            tieneNumeroIncorrecto = false;
+            EstablecerColor( Color.white );
+            MostrarTexto();
+        }
     }
 
     public void OnEstablecerNumero ( int numero )
