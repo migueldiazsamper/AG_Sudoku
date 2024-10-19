@@ -10,7 +10,7 @@ using UnityEngine.EventSystems;
 public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler , IPointerUpHandler , IPointerExitHandler
 {
     // Variable serializada para configurar el texto del número desde el editor de Unity
-    [ SerializeField ] GameObject textoNumero;
+    public GameObject textoNumero;
     public List< GameObject > notasDeLosNumeros; // Índices de los cuadrados incorrectos en la cuadrícula
     int numero = 0; // Número que se mostrará en el cuadrado
     bool seleccionado = false; // Indica si el cuadrado está seleccionado
@@ -112,7 +112,7 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
         }
         else
         {
-            bool tieneNumero = notasDeLosNumeros[ valor - 1 ].GetComponent< TextMeshProUGUI >().text != " " || forzarActualizacion;
+            bool tieneNumero = notasDeLosNumeros[ valor - 1 ].GetComponent< TextMeshProUGUI >().text == " " || forzarActualizacion;
             if ( tieneNumero )
             {
                 notasDeLosNumeros[ valor - 1 ].GetComponent< TextMeshProUGUI >().text = valor.ToString();
