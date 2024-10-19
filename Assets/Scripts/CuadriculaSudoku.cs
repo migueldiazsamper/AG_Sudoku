@@ -136,11 +136,13 @@ public class CuadriculaSudoku : MonoBehaviour
     void OnEnable ()
     {
         EventosJuego.OnCuadradoSeleccionado += OnCuadradoSeleccionado;
+        EventosJuego.OnActualizarNumeroCuadrado += ComprobarTableroCompletado;
     }
 
     void OnDisable ()
     {
         EventosJuego.OnCuadradoSeleccionado -= OnCuadradoSeleccionado;
+        EventosJuego.OnActualizarNumeroCuadrado -= ComprobarTableroCompletado;
     }
 
     void EstablecerColoresCuadrados ( int[] datos , Color color )
@@ -166,5 +168,31 @@ public class CuadriculaSudoku : MonoBehaviour
         EstablecerColoresCuadrados( lineaHorizontal , colorResaltado );
         EstablecerColoresCuadrados( lineaVertical , colorResaltado );
         EstablecerColoresCuadrados( cuadrado , colorResaltado );
+    }
+
+    void ComprobarTableroCompletado ( int numero )
+    {
+        foreach ( var cuadrado in cuadricula )
+        {
+            var componente = cuadrado.GetComponent< CuadriculaBase >();
+            bool noEsCorrecto = ! componente.TieneNumeroCorrecto();
+            if ( noEsCorrecto )
+            {
+                return;
+            }
+        }
+
+        EventosJuego.MetodoTableroCompletado();
+    }
+
+    public void ResolverSudoku ()
+    {
+        foreach ( var cuadrado in cuadricula )
+        {
+            var componente = cuadrado.GetComponent< CuadriculaBase >();
+            componente.EstablecerNumeroCorrecto();
+        }
+
+        ComprobarTableroCompletado( 0 );
     }
 }

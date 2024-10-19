@@ -65,4 +65,16 @@ public class EventosJuego : MonoBehaviour
             OnBorrarNumero();
         }
     }
+
+    public delegate void TableroCompletado ();
+    public static event TableroCompletado OnTableroCompletado;
+
+    public static void MetodoTableroCompletado ()
+    {
+        bool noEsNulo = OnTableroCompletado != null;
+        if ( noEsNulo )
+        {
+            OnTableroCompletado();
+        }
+    }
 }
