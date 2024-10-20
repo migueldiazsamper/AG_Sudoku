@@ -18,6 +18,11 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
     bool tieneNumeroPredeterminado = false; // Indica si el cuadrado tiene un número predeterminado
     bool tieneNumeroIncorrecto = false; // Indica si el cuadrado tiene un número incorrecto
 
+    public int ObtenerNumero () // Método para obtener el número del cuadrado
+    {
+        return numero;
+    }
+
     public bool TieneNumeroCorrecto () // Método para obtener si el cuadrado tiene un número correcto
     {
         return numero == numeroCorrecto;

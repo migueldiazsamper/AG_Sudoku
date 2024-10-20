@@ -34,7 +34,30 @@ public class Ajustes : MonoBehaviour
     }
 
     Dificultad dificultad; // Variable para almacenar la dificultad actual
+    bool continuarJuegoPrevio = false; // Variable para saber si se debe continuar un juego previo
+    bool salirDespuesDeGanar = false; // Variable para saber si se debe salir después de ganar
     bool juegoPausado = false;
+
+    public void EstablecerSalirDespuesDeGanar ( bool salir )
+    {
+        salirDespuesDeGanar = salir;
+        continuarJuegoPrevio = false;
+    }
+
+    public bool ObtenerSalirDespuesDeGanar ()
+    {
+        return salirDespuesDeGanar;
+    }
+
+    public void EstablecerContinuarJuegoPrevio ( bool continuar )
+    {
+        continuarJuegoPrevio = continuar;
+    }
+
+    public bool ObtenerContinuarJuegoPrevio ()
+    {
+        return continuarJuegoPrevio;
+    }
 
     public void PararJuego ( bool pausado )
     {
@@ -50,6 +73,7 @@ public class Ajustes : MonoBehaviour
     void Start ()
     {
         dificultad = Dificultad.NO_ESTABLECIDO; // Establecer la dificultad inicial como no establecida
+        continuarJuegoPrevio = false; // Establecer continuar juego previo como falso
     }
 
     // Método para establecer la dificultad usando la enumeración Dificultad

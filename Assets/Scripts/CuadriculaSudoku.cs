@@ -26,7 +26,25 @@ public class CuadriculaSudoku : MonoBehaviour
     void Start ()
     {
         CrearCuadricula(); // Crear la cuadrícula
-        PonerNumerosEnCuadricula( Ajustes.Instancia.ObtenerDificultad() ); // Poner números en la cuadrícula
+
+        bool hayQueContinuarJuegoPrevio = Ajustes.Instancia.ObtenerContinuarJuegoPrevio(); // Comprobar si se debe continuar un juego previo
+        if ( hayQueContinuarJuegoPrevio )
+        {
+            EstablecerArchivoConFormaDeTablero(); // Establecer los datos del archivo en la cuadrícula
+        }
+        else
+        {
+            PonerNumerosEnCuadricula( Ajustes.Instancia.ObtenerDificultad() ); // Poner números en la cuadrícula
+        }
+    }
+
+    void EstablecerArchivoConFormaDeTablero ()
+    {
+        string nivel = Ajustes.Instancia.ObtenerDificultad(); // Obtener el nivel de dificultad del juego
+        datosSeleccionadosCuadricula = Config.LeerIndiceTablero(); // Leer los datos del archivo de configuración
+        var datos = Config.LeerDatosTablero(); // Obtener los datos del archivo de configuración
+
+        EstablecerDatosEnCuadricula( datos ); // Establecer los datos sin resolver en la cuadrícula
     }
 
     // Método para crear la cuadrícula
@@ -143,6 +161,27 @@ public class CuadriculaSudoku : MonoBehaviour
     {
         EventosJuego.OnCuadradoSeleccionado -= OnCuadradoSeleccionado;
         EventosJuego.OnActualizarNumeroCuadrado -= ComprobarTableroCompletado;
+
+        var datosResueltos = DatosSudoku.Instancia.juegoSudoku[ Ajustes.Instancia.ObtenerDificultad() ][ datosSeleccionadosCuadricula ].datosResueltos;
+        int[] datosNoResueltos = new int[ 81 ];
+
+        for ( int indice = 0 ; indice < cuadricula.Count ; indice++ )
+        {
+            var componente = cuadricula[ indice ].GetComponent< CuadriculaBase >();
+            datosNoResueltos[ indice ] = componente.ObtenerNumero();
+        }
+
+        DatosSudoku.DatosSudokuTabla datosActuales = new DatosSudoku.DatosSudokuTabla( datosNoResueltos , datosResueltos );
+
+        bool noHemosGanado = ! Ajustes.Instancia.ObtenerSalirDespuesDeGanar();
+        if ( noHemosGanado )
+        {
+            Config.GuardarDatosTablero( datosActuales , Ajustes.Instancia.ObtenerDificultad() , datosSeleccionadosCuadricula , Vidas.Instancia.ObtenerNumeroErrores() );
+        }
+        else
+        {
+            Config.EliminarDatosArchivo();
+        }
     }
 
     void EstablecerColoresCuadrados ( int[] datos , Color color )

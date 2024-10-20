@@ -9,10 +9,29 @@ public class Vidas : MonoBehaviour
     int vidas = 0;
     int numeroDeError = 0;
 
+    public static Vidas Instancia;
+
+    void Awake ()
+    {
+        if ( Instancia == null )
+        {
+            Instancia = this;
+        }
+        else
+        {
+            Destroy( this );
+        }
+    }
+
     void Start ()
     {
         vidas = imagenesDeError.Count;
         numeroDeError = 0;
+    }
+
+    public int ObtenerNumeroErrores ()
+    {
+        return numeroDeError;
     }
 
     void NumeroIncorrecto ()
