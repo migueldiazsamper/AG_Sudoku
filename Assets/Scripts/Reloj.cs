@@ -25,7 +25,16 @@ public class Reloj : MonoBehaviour
 
         instancia = this;
         textoReloj = GetComponent< TextMeshProUGUI >();
-        tiempoTranscurrido = 0;
+
+        bool continuarPartida = Ajustes.Instancia.ObtenerContinuarJuegoPrevio();
+        if ( continuarPartida )
+        {
+            tiempoTranscurrido = Config.LeerTiempoJuego();
+        }
+        else
+        {
+            tiempoTranscurrido = 0;
+        }
     }
 
     void Start ()

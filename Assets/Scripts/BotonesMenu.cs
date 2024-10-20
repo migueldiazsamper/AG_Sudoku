@@ -68,4 +68,14 @@ public class BotonesMenu : MonoBehaviour
     {
         Ajustes.Instancia.PararJuego( pausado );
     }
+
+    public void ContinuarJuegoPrevio ( bool continuar )
+    {
+        Ajustes.Instancia.EstablecerContinuarJuegoPrevio( continuar );
+    }
+
+    public void SalirDespuesDeGanar ()
+    {
+        Ajustes.Instancia.EstablecerSalirDespuesDeGanar( true );
+    }
 }

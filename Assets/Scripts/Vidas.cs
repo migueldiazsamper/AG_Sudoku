@@ -27,6 +27,18 @@ public class Vidas : MonoBehaviour
     {
         vidas = imagenesDeError.Count;
         numeroDeError = 0;
+
+        bool continuarPartida = Ajustes.Instancia.ObtenerContinuarJuegoPrevio();
+        if ( continuarPartida )
+        {
+            numeroDeError = Config.LeerNumeroErrores();
+            vidas = imagenesDeError.Count - numeroDeError;
+
+            for ( int i = 0; i < numeroDeError; i++ )
+            {
+                imagenesDeError[ i ].SetActive( true );
+            }
+        }
     }
 
     public int ObtenerNumeroErrores ()

@@ -56,14 +56,14 @@ public class Config : MonoBehaviour
         string nivel = "";
         StreamReader archivo = new StreamReader( path );
 
-        bool encontradaLinea = ( linea = archivo.ReadLine() ) != null;
-        while ( encontradaLinea )
+        while ( ( linea = archivo.ReadLine() ) != null )
         {
             string[] palabra = linea.Split( ':' );
             bool palabraEsNivel = palabra[0] == "#nivel";
             if ( palabraEsNivel )
             {
                 nivel = palabra[1];
+                break;
             }
         }
 
@@ -82,8 +82,7 @@ public class Config : MonoBehaviour
         int indiceDatosSinResolver = 0;
         int indiceDatosResueltos = 0;
 
-        bool encontradaLinea = ( linea = archivo.ReadLine() ) != null;
-        while ( encontradaLinea )
+        while ( ( linea = archivo.ReadLine() ) != null )
         {
             string[] palabra = linea.Split( ':' );
             bool palabraEsSinResolver = palabra[ 0 ] == "#sinResolver";
@@ -129,14 +128,14 @@ public class Config : MonoBehaviour
         string linea;
         StreamReader archivo = new StreamReader( path );
 
-        bool encontradaLinea = ( linea = archivo.ReadLine() ) != null;
-        while ( encontradaLinea )
+        while ( ( linea = archivo.ReadLine() ) != null )
         {
             string[] palabra = linea.Split( ':' );
             bool palabraEsNivel = palabra[0] == "#indiceTablero";
             if ( palabraEsNivel )
             {
                 int.TryParse( palabra[1] , out nivel );
+                break;
             }
         }
 
@@ -149,16 +148,16 @@ public class Config : MonoBehaviour
         float tiempo = -1.0f;
         string linea;
 
-        StringReader archivo = new StringReader( path );
+        StreamReader archivo = new StreamReader( path );
 
-        bool encontradaLinea = ( linea = archivo.ReadLine() ) != null;
-        while ( encontradaLinea )
+        while ( ( linea = archivo.ReadLine() ) != null )
         {
             string[] palabra = linea.Split( ':' );
             bool palabraEsNivel = palabra[0] == "#tiempo";
             if ( palabraEsNivel )
             {
                 float.TryParse( palabra[1] , out tiempo );
+                break;
             }
         }
 
@@ -170,16 +169,16 @@ public class Config : MonoBehaviour
     {
         int numeroErrores = 0;
         string linea;
-        StringReader archivo = new StringReader( path );
+        StreamReader archivo = new StreamReader( path );
 
-        bool encontradaLinea = ( linea = archivo.ReadLine() ) != null;
-        while ( encontradaLinea )
+        while ( ( linea = archivo.ReadLine() ) != null )
         {
             string[] palabra = linea.Split( ':' );
             bool palabraEsNivel = palabra[0] == "#errores";
             if ( palabraEsNivel )
             {
                 int.TryParse( palabra[1] , out numeroErrores );
+                break;
             }
         }
 

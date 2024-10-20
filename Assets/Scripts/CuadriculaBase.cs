@@ -53,10 +53,17 @@ public class CuadriculaBase : Selectable , IPointerClickHandler , ISubmitHandler
         indiceCuadrado = indice;
     }
 
-    public void EstablecerNumeroCorrecto ( int numero ) // Método para asignar el número correcto al cuadrado
+    public void EstablecerNumeroCorrecto ( int numeroPasado ) // Método para asignar el número correcto al cuadrado
     {
-        numeroCorrecto = numero;
+        numeroCorrecto = numeroPasado;
         tieneNumeroIncorrecto = false;
+
+        bool numeroIncorrecto = numero != 0 && numero != numeroCorrecto;
+        if ( numeroIncorrecto )
+        {
+            tieneNumeroIncorrecto = true;
+            EstablecerColor( Color.red );
+        }
     }
 
     public void EstablecerNumeroCorrecto () // Método para asignar el número correcto al cuadrado
